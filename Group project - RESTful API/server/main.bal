@@ -1,4 +1,3 @@
-import ballerina/io;
 import ballerina/http;
 
 enum Courses {
@@ -43,11 +42,9 @@ service / on new http:Listener(8000) {
         if (createNewLecturer is error){
             return "Error " + createNewLecturer.message();
         }else {
-           return newLecturer.name + " saved successfuly";
+           return newLecturer.name + " saved successfuly!";
         }
    } 
-
-   
 
    resource function get retrieveLecturerByStaffNumber(int staffNumber) returns Lecturer[] {
         table<Lecturer> lecturerResults =  from var lecturer in lecturerTable
@@ -69,18 +66,18 @@ service / on new http:Listener(8000) {
         if (updateLecturer is error){
             return "Error " + updateLecturer.message();
         }else {
-           return updatedLecturer.name + " updated successfuly";
+           return updatedLecturer.name + " updated successfuly!";
         }
    } 
 
-   resource function delete deleteLecturer/[int staffNumber]() returns string|error {
+   resource function delete deleteLecturer(int staffNumber) returns string|error {
         //Error handling to ensure our app does not crash
         Lecturer|error deleteLecturer = lecturerTable.remove(staffNumber);
 
         if (deleteLecturer is error){
             return "Error " + deleteLecturer.message();
         }else {
-           return deleteLecturer.name + "deleted successfuly";
+           return deleteLecturer.name + " deleted successfuly!";
         }
    } 
 
@@ -95,34 +92,22 @@ service / on new http:Listener(8000) {
         }
    } 
 
-   resource function get retrieveAllLecturersByCourse() returns string|error{
-        
-        //joined some tables, but still have to make sure they're all correct!!!
-
-        var lecturerCourses = from var Lecturer in lecturerTable 
-        //tried to join the course and lecturer tables here, not sure its right
-        join var courseLecturer in courseLecturerTable 
-        on Lecturer.coursesTaught equals courseLecturer.staffNumber 
-        join var Course in courseTable
-        on courseLecturer.courseCode equals Course.courseCode
-        select {
-            name: Lecturer.name,
-            staffNumber: Lecturer.staffNumber,
-            title: Lecturer.title
-        };
-
-        io:println("lecturerCourses ", lecturerCourses);
-
-        return "Test Functions.";
+   resource function get retrieveAllLecturersByCourse(string coursesTaught) returns Lecturer[]{
+         table<Lecturer> lecturerByCourseResults =  from var lecturer in lecturerTable
+            order by  lecturer.name ascending
+            where lecturer.coursesTaught === coursesTaught
+            select lecturer;
+            
+        return lecturerByCourseResults.toArray();
    }
 
 
-   resource function get retrieveAllLecturerByOffice(int OfficeNumber) returns Lecturer[] {
-        table<Lecturer> lecturerResults =  from var lecturer in lecturerTable
+   resource function get retrieveAllLecturerByOffice(int officeNumber) returns Lecturer[] {
+        table<Lecturer> lecturerByOfficeResults =  from var lecturer in lecturerTable
             order by  lecturer.name ascending
-            where lecturer.officeNumber === OfficeNumber
+            where lecturer.officeNumber === officeNumber
             select lecturer;
             
-        return lecturerResults.toArray();
+        return lecturerByOfficeResults.toArray();
    }
 }
