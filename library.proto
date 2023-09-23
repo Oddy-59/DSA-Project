@@ -1,18 +1,16 @@
 syntax = "proto3";
-
 package library;
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
 
 service LibraryService {
-    rpc ListAvailableBooks (ListAvailableBooksRequest) returns (ListAvailableBooksResponse);
-    rpc CreateUsers (stream CreateUserRequest) returns (CreateUsersResponse);
-    rpc BorrowBook (BorrowBookRequest) returns (BorrowBookResponse);
-    rpc SearchBook (SearchBookRequest) returns (SearchBookResponse);
-    rpc LocateBook (LocateBookRequest) returns (LocateBookResponse);
-    rpc ReturnBook (ReturnBookRequest) returns (ReturnBookResponse);
     rpc AddBook (AddBookRequest) returns (AddBookResponse);
+    rpc CreateUsers (stream CreateUserRequest) returns (CreateUsersResponse);
     rpc UpdateBook (UpdateBookRequest) returns (UpdateBookResponse);
     rpc RemoveBook (RemoveBookRequest) returns (RemoveBookResponse);
-    rpc ListBorrowedBooks (ListBorrowedBooksRequest) returns (ListBorrowedBooksResponse);
+    rpc ListAvailableBooks (ListAvailableBooksRequest) returns (ListAvailableBooksResponse);
+    rpc LocateBook (LocateBookRequest) returns (LocateBookResponse);
+    rpc BorrowBook (BorrowBookRequest) returns (BorrowBookResponse);
 }
 
 // Adding a book
@@ -22,7 +20,6 @@ message AddBookRequest {
     string author_2 = 3;
     string location = 4;
     string isbn = 5;
-    string status = 6;
     bool available = 7;
 }
 message AddBookResponse {
@@ -31,7 +28,7 @@ message AddBookResponse {
 
 // Creating users
 message CreateUserRequest {
-    string id = 1;
+    string userId = 1;
     string username = 2;
     // can still add mo
 }
@@ -41,8 +38,12 @@ message CreateUsersResponse {
 
 // Updating a book
 message UpdateBookRequest {
-    string isbn = 1;
-    string location = 2;
+    string id = 1;
+    string title = 2;
+    string author = 3;
+    string author_2 = 4;
+    string isbn = 5;
+    string location = 6;
 }
 message UpdateBookResponse {
     bool success = 1;
@@ -56,13 +57,12 @@ message RemoveBookRequest {
 message RemoveBookResponse {
     repeated Book books = 1;
     bool success = 2;
-    string message = 3; // want to remove but need comments
+    string message = 3;
 }
 
 //Listing available books
 message ListAvailableBooksRequest {
-    // this message can be empty since no additional parameters are needed or,
-    string filter_author = 1;
+    string message = 1;
 }
 message ListAvailableBooksResponse {
     repeated Book books = 1; 
@@ -89,35 +89,21 @@ message BorrowBookResponse {
 
 // Book details
 message Book {
-    string id = 1; // also think this must be removed but need input
+    int64 id = 1;
     string title = 2;
     string author = 3;
     string author_2 = 4;
     string isbn = 5;
 }
 
-
- 
-message SearchBookRequest {
-    string query = 1;
-}
-message SearchBookResponse {
-    repeated Book books = 1;
+message Student{
+    int64 student_id = 1;
+    string fname = 2;
+    string lname = 3;
 }
 
-message ReturnBookRequest {
-    string book_id = 1;
-    string student_id = 2;
-}
-
-message ReturnBookResponse {
-    bool success = 1;
-    string message = 2;
-}
-
-message ListBorrowedBooksRequest {
-    string student_id = 1;
-}
-message ListBorrowedBooksResponse {
-    repeated Book books = 1;
+message Librarian{
+    int64 staffNo = 1;
+    string fullNames = 2;
+    string officeNo = 3;
 }
