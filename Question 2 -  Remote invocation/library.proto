@@ -28,7 +28,7 @@ message AddBookResponse {
 
 // Creating users
 message CreateUserRequest {
-    string userId = 1;
+    string student_id = 1;
     string username = 2;
     // can still add mo
 }

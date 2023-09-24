@@ -51,13 +51,13 @@ service "LibraryService" on new grpc:Listener(9090) {
     }
 
     remote function CreateUsers(CreateUserRequest value) returns CreateUsersResponse|error {
-        CreateUsersResponse userCreated = createUser(value.userId, value.username);
+        CreateUsersResponse userCreated = createUser(value.student_id, value.username);
 
-        if (userCreated == null) {
-            return {message: "Failed to create a user"};
+        if (userCreated =! null) {
+            return {message: "User created successfully"}; 
         }
 
-        CreateUsersResponse response = {message: "User created successfully"};
+        CreateUsersResponse response = {message: "Failed to create a user"};
         return response;
     }
 
