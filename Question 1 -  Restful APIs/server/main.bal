@@ -81,7 +81,7 @@ service / on new http:Listener(8000) {
         }
    } 
 
-   resource function post createCourse(Course newCourse) returns string|error {
+   resource function post createNewCourse(Course newCourse) returns string|error {
         //Error handling to ensure our app does not crash
         error? createNewCourse = courseTable.add(newCourse);
 
@@ -92,7 +92,7 @@ service / on new http:Listener(8000) {
         }
    } 
 
-   resource function get retrieveAllCourses() returns Course[]{
+   resource function get getAllCourses() returns Course[]{
         return courseTable.toArray();
    }
 
