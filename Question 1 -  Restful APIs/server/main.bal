@@ -81,16 +81,21 @@ service / on new http:Listener(8000) {
         }
    } 
 
-   resource function post createCourse(Course newCourse) returns string {
+   resource function post createCourse(Course newCourse) returns string|error {
         //Error handling to ensure our app does not crash
         error? createNewCourse = courseTable.add(newCourse);
 
         if (createNewCourse is error){
             return "Error " + createNewCourse.message();
         }else {
-           return newCourse.courseName + "saved successfuly";
+           return newCourse.courseName + " saved successfuly";
         }
    } 
+
+   resource function get retrieveAllCourses() returns Course[]{
+        return courseTable.toArray();
+   }
+
 
    resource function get retrieveAllLecturersByCourse(string coursesTaught) returns Lecturer[]{
          table<Lecturer> lecturerByCourseResults =  from var lecturer in lecturerTable

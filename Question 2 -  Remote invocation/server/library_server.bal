@@ -2,7 +2,7 @@ import ballerina/grpc;
 
 type LibraryServiceObject object {
     // Maintain a list of library books
-    map<string, Book> books = {};
+    map<string Book> books = {};
 
     // Implement gRPC service functions
 
@@ -13,14 +13,14 @@ type LibraryServiceObject object {
         book.isAvailable = true;
         books[isbn] = book;
         return isbn;
-    }
+    };
 
     public function createUsers(stream User users) returns string {
         // Process and store user information (e.g., in-memory database)
         // You can use a database to store user data
         // Return a success message or error if needed
         return "Users created successfully";
-    }
+    };
 
     public function listAvailableBooks(ListAvailableBooksRequest request) returns stream<Book> {
         // Stream the list of available books to the client
@@ -39,7 +39,7 @@ type LibraryServiceObject object {
         // You can use a more robust method for generating ISBNs
         return "ISBN-" + string(math:randInt(1000, 9999));
     }
-}
+};
 
 public function main() {
     endpoint grpc:Listener listener {
