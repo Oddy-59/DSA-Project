@@ -36,8 +36,6 @@ paths:
             text/plain:
               schema:
                 type: string
-          default:
-            description: Created
         "500":
           description: Internal server error
           content:
