@@ -1,5 +1,5 @@
 syntax = "proto3";
-package library;
+package libraryManagement;
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
 
@@ -30,7 +30,6 @@ message AddBookResponse {
 message CreateUserRequest {
     string student_id = 1;
     string username = 2;
-    // can still add mo
 }
 message CreateUsersResponse {
     string message = 1;
