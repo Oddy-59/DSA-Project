@@ -81,16 +81,43 @@ service / on new http:Listener(8000) {
         }
    } 
 
-   resource function post createCourse(Course newCourse) returns string {
+   resource function post createNewCourse(Course newCourse) returns string|error {
         //Error handling to ensure our app does not crash
         error? createNewCourse = courseTable.add(newCourse);
 
         if (createNewCourse is error){
             return "Error " + createNewCourse.message();
         }else {
-           return newCourse.courseName + "saved successfuly";
+           return newCourse.courseName + " saved successfuly";
         }
    } 
+
+   resource function get getAllCourses() returns Course[]{
+        return courseTable.toArray();
+   }
+
+   resource function put UpdateCourses(Course updatedCourse) returns string|error {
+        //Error handling to ensure our app does not crash
+        error? updateCourse = courseTable.put(updatedCourse);
+
+        if (updateCourse is error){
+            return "Error " + updateCourse.message();
+        }else {
+           return updatedCourse.courseName + " updated successfuly!";
+        }
+   } 
+
+   resource function delete deleteCourse(string courseName) returns string|error {
+        //Error handling to ensure our app does not crash
+        Course|error deleteCourse = courseTable.remove(courseName);
+
+        if (deleteCourse is error){
+            return "Error " + deleteCourse.message();
+        }else {
+           return deleteCourse.courseName + " deleted successfuly!";
+        }
+   } 
+
 
    resource function get retrieveAllLecturersByCourse(string coursesTaught) returns Lecturer[]{
          table<Lecturer> lecturerByCourseResults =  from var lecturer in lecturerTable

@@ -2,15 +2,20 @@ openapi: 3.0.1
 info:
   title: Main Openapi Yaml
   version: 0.1.0
+
 servers:
 - url: "{server}:{port}/"
   variables:
     server:
       default: http://localhost
     port:
+      enum:
+          - "44333"
+          - "8990"
       default: "8000"
 paths:
   /addLecturer:
+    summary: Operations about adding lecturers
     post:
       operationId: postAddlecturer
       requestBody:
@@ -21,6 +26,12 @@ paths:
       responses:
         "201":
           description: Created
+          content:
+            text/plain:
+              schema:
+                type: string
+        "404":
+          description: Incorrect input
           content:
             text/plain:
               schema:

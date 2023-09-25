@@ -1,5 +1,5 @@
 import ballerina/grpc;
-import libraryManagement;// I am getting an error here, no idea why. tried quick fixes but no luck
+//import library;// I am getting an error here, no idea why
 
 // Let us define message types here
 
@@ -37,21 +37,23 @@ service "LibraryService" on new grpc:Listener(9090) {
 
     // Error handling
 
-    remote function AddBook(AddBookRequest value) returns string|error { //getting an error here at "AddBook"
+    resource function AddBook(AddBookRequest value) returns string|error {
+    // Assuming you have a function to create a new book
         Book? newBook = createNewBook(value);
 
         if (newBook == null) {
             return error("Failed to add book!");
         }
 
+        // Return a success message in AddBookResponse
         string response = value.isbn;
         return response;
     }
 
     remote function CreateUsers(CreateUserRequest value) returns CreateUsersResponse|error {
-        CreateUsersResponse userCreated = createUser(value.username);
+        CreateUsersResponse userCreated = createUser(value.student_id, value.username);
 
-        if (value.username != null) { // also getting another error here at "value.username != null"
+        if (userCreated =! null) {
             return {message: "User created successfully"}; 
         }
 
@@ -60,9 +62,9 @@ service "LibraryService" on new grpc:Listener(9090) {
     }
 
     remote function UpdatedBook(UpdateBookRequest value) returns UpdateBookResponse|error {
-        boolean isUpdated = updatedBook(value.isbn);
+        UpdateBookResponse isUpdated = updatedBook(value.isbn);
 
-        if (!isUpdated) {
+        if (isUpdated) {
             return error("Failed to update the the book");
         }
 
@@ -71,9 +73,9 @@ service "LibraryService" on new grpc:Listener(9090) {
     }
 
     remote function RemoveBook(RemoveBookRequest value) returns RemoveBookResponse|error {
-        boolean isRemoved = removeBook(value.isbn);
+        RemoveBookResponse isRemoved = removeBook(value.isbn);
 
-        if (!isRemoved) {
+        if (isRemoved == null) {
             return error("Failed to remove the book");
         }
 
@@ -107,7 +109,7 @@ service "LibraryService" on new grpc:Listener(9090) {
         boolean isSuccess = borrowBook(value.student_id, value.isbn);
 
         if (!isSuccess) {
-            return error("Failed to borrow the book");
+            return {message: "Failed to borrow the book"};
         }
 
         BorrowBookResponse response = {message: "Book borrowed successfully"};
@@ -116,16 +118,16 @@ service "LibraryService" on new grpc:Listener(9090) {
     
 }
 
-function createUser(any a) returns CreateUsersResponse {
+function createUser(any a, string s) returns CreateUsersResponse {
     return {};
 }
 
-function updatedBook(string s) returns boolean {
-    return false;
+function updatedBook(string s) returns UpdateBookResponse {
+    return {};
 }
 
-function removeBook(string s) returns boolean {
-    return false;
+function removeBook(string s) returns RemoveBookResponse {
+    return {};
 }
 
 function createNewBook(AddBookRequest r) returns Book? {
