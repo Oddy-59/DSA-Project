@@ -53,7 +53,7 @@ service "LibraryService" on new grpc:Listener(9090) {
      remote function CreateUsers(CreateUserRequest value) returns CreateUsersResponse|error {
         CreateUsersResponse userCreated = createUser(value.username);
 
-        if (value.username == null) {
+        if value.username is() {
             return {message: "Failed to create a user"};
         }
 
