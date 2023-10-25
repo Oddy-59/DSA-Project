@@ -53,7 +53,11 @@ service "LibraryService" on new grpc:Listener(9090) {
      remote function CreateUsers(CreateUserRequest value) returns CreateUsersResponse|error {
         CreateUsersResponse userCreated = createUser(value.username);
 
+<<<<<<< HEAD:Assignment1/Question 2 -  Remote invocation/server/libraryservice_service.bal
         if (username == null) {
+=======
+        if value.username is() {
+>>>>>>> bc70fa621fa27c28dd802596b421c509677ed9f8:Question 2 -  Remote invocation/server/libraryservice_service.bal
             return {message: "Failed to create a user"};
         }
 

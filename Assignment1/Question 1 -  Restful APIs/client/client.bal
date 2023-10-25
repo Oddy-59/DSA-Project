@@ -84,12 +84,38 @@ public isolated client class Client {
     }
     #
     # + return - Created 
-    resource isolated function post createCourse(Course payload) returns string|error {
-        string resourcePath = string `/createCourse`;
+    resource isolated function post createNewCourse(Course payload) returns string|error {
+        string resourcePath = string `/createNewCourse`;
         http:Request request = new;
         json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         string response = check self.clientEp->post(resourcePath, request);
+        return response;
+    }
+    #
+    # + return - Ok 
+    resource isolated function get getAllCourses() returns Course[]|error {
+        string resourcePath = string `/getAllCourses`;
+        Course[] response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+    #
+    # + return - Ok 
+    resource isolated function put UpdateCourses(Course payload) returns string|error {
+        string resourcePath = string `/UpdateCourses`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->put(resourcePath, request);
+        return response;
+    }
+    #
+    # + return - Ok 
+    resource isolated function delete deleteCourse(string courseName) returns string|error {
+        string resourcePath = string `/deleteCourse`;
+        map<anydata> queryParam = {"courseName": courseName};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        string response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #

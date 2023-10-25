@@ -61,6 +61,8 @@ public type ProxyConfig record {|
 
 public type LecturerArr Lecturer[];
 
+public type CourseArr Course[];
+
 public type ErrorPayload record {
     # Reason phrase
     string reason?;
