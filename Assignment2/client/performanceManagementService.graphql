@@ -33,7 +33,6 @@ type Department {
 type Query {
     getUserById(id: ID!): User
     getDepartmentById(id: ID!): Department
-    // Add more queries as needed
 }
 
 type Mutation {
@@ -42,5 +41,4 @@ type Mutation {
     createObjective(name: String!, weightage: Float!): Objective
     createDepartment(name: String!, objectives: [ID]!): Department
     assignUserToDepartment(userId: ID!, departmentId: ID!): Boolean
-    // Add more mutations as needed
 }
