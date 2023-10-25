@@ -1,0 +1,46 @@
+type Department {
+    id: ID!
+    name
+}
+
+type User {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    jobTitle: String!
+    position: String!
+    role: String!
+}
+
+type KPI {
+    id: ID!
+    name: String!
+    value: Float!
+}
+
+type Objective {
+    id: ID!
+    name: String!
+    weightage: Float!
+}
+
+type Department {
+    id: ID!
+    name: String!
+    objectives: [Objective]!
+}
+
+type Query {
+    getUserById(id: ID!): User
+    getDepartmentById(id: ID!): Department
+    // Add more queries as needed
+}
+
+type Mutation {
+    createUser(firstName: String!, lastName: String!, jobTitle: String!, position: String!, role: String!): User
+    createKPI(name: String!, value: Float!): KPI
+    createObjective(name: String!, weightage: Float!): Objective
+    createDepartment(name: String!, objectives: [ID]!): Department
+    assignUserToDepartment(userId: ID!, departmentId: ID!): Boolean
+    // Add more mutations as needed
+}
